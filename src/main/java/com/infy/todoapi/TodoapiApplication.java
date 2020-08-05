@@ -9,10 +9,20 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+/**
+ * @author raghava
+ * This is REST API to todo
+ * omitted the service layer as this is smaller application.
+ * For bigger apis will add service layer and separate request model
+ * 
+ *
+ */
+
 @SpringBootApplication
 @EnableSwagger2
 public class TodoapiApplication {
 
+	
 	public static void main(String[] args) {
 		SpringApplication.run(TodoapiApplication.class, args);
 	}

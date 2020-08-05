@@ -4,13 +4,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @Entity
 public class ToDo {
 	
+	@Id
+	@GeneratedValue
 	private Long id;
 	@NotBlank(message = "Title cant be blank")
 	@Size(max = 100 , message = "Maximum length is 100")
@@ -22,9 +23,8 @@ public class ToDo {
 		super();
 	}
 
-	public ToDo(Long id, String title, boolean completed) {
+	public ToDo( String title, boolean completed) {
 		super();
-		this.id = id;
 		this.title = title;
 		this.completed = completed;
 	}

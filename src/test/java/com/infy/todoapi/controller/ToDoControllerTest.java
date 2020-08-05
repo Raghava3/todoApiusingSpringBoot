@@ -1,126 +1,94 @@
 package com.infy.todoapi.controller;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.Assert;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.infy.todoapi.exceptions.ToDoNotFoundException;
+import com.infy.todoapi.TodoapiApplication;
 import com.infy.todoapi.model.ToDo;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@WebAppConfiguration
+@SpringBootTest(classes = TodoapiApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ToDoControllerTest {
 
-	protected MockMvc mockMvc;
-	   
-	@Autowired
-	WebApplicationContext webApplicationContext;
-	
 	ObjectMapper om = new ObjectMapper();
 
-	
-	@Before
-	public void setUp() throws Exception {
-		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+	@Autowired
+	private TestRestTemplate restTemplate;
+
+	@LocalServerPort
+	private int port;
+
+	private String getRootUrl() {
+		return "http://localhost:" + port + "/api/v1";
 	}
 
 	@Test
-	public void testAllToDO() throws Exception {
-	   MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/todo")
-	      .accept(MediaType.APPLICATION_JSON_VALUE))
-		  .andReturn();
-	   assertEquals(200, mvcResult.getResponse().getStatus());
+	public void contextLoads() {
 	}
 
 	@Test
-	public void testSaveToDO_SuccessfullySaved() throws Exception {
+	public void testGetAllToDo() {
+		HttpHeaders headers = new HttpHeaders();
+		HttpEntity<String> entity = new HttpEntity<String>(null, headers);
+		ResponseEntity<String> response = restTemplate.exchange(getRootUrl() + "/todo", HttpMethod.GET, entity,
+				String.class);
+		Assert.assertEquals(200, response.getStatusCodeValue());
+	}
+
+	@Test
+	public void testSaveToDo() throws JsonProcessingException {
 
 		ToDo do1 = new ToDo();
-		do1.setcompleted(false);
 		do1.setTitle("testing");
-
-		MvcResult result = mockMvc
-				.perform(MockMvcRequestBuilders.post("/api/v1/todo")
-				.contentType(MediaType.APPLICATION_JSON_VALUE)
-				.content(om.writeValueAsString(do1)))
-				.andReturn();
-		assertEquals(200, result.getResponse().getStatus());
-
+		do1.setcompleted(false);
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		HttpEntity<String> entity = new HttpEntity<String>(om.writeValueAsString(do1), headers);
+		ResponseEntity<String> response = restTemplate.exchange(getRootUrl() + "/todo", HttpMethod.POST, entity,
+				String.class);
+		Assert.assertEquals(200, response.getStatusCodeValue());
 	}
-	
-	
-	
-	@Test
-	public void testupdateToDo_Successfully() throws Exception {
-
-		ToDo do1 = new ToDo();
-		do1.setcompleted(true);
-		do1.setTitle("testing update");
-		
-	   MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/v1/todo/2")
-	      .contentType(MediaType.APPLICATION_JSON_VALUE)
-	      .content(om.writeValueAsString(do1)))
-		  .andReturn();
-	   
-	   int status = mvcResult.getResponse().getStatus();
-	   assertEquals(202, status);
-	}
-
-	@Test(expected = ToDoNotFoundException.class)
-	public void testupdateToDo_ToDoNotFoundException() throws Exception {
-
-		ToDo do1 = new ToDo();
-		do1.setcompleted(true);
-		do1.setTitle("testing update");
-		
-	   MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/v1/todo/10")
-	      .contentType(MediaType.APPLICATION_JSON_VALUE)
-	      .content(om.writeValueAsString(do1)))
-		  .andReturn();
-	   
-	}
-
 
 	@Test
-	public void testdeleteToDo_Successfully() throws Exception {
+	public void testUpdateToDo() throws JsonProcessingException {
 
 		ToDo do1 = new ToDo();
-		do1.setcompleted(true);
-		do1.setTitle("testing update");
-		
-	   MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/api/v1/todo/2")
-	      .contentType(MediaType.APPLICATION_JSON_VALUE)
-	      .content(om.writeValueAsString(do1)))
-		  .andReturn();
-	   
-	   int status = mvcResult.getResponse().getStatus();
-	   assertEquals(202, status);
+		do1.setTitle("testing");
+		do1.setcompleted(false);
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		HttpEntity<String> entity = new HttpEntity<String>(om.writeValueAsString(do1), headers);
+		ResponseEntity<String> response = restTemplate.exchange(getRootUrl() + "/todo/1", HttpMethod.PUT, entity,
+				String.class);
+		Assert.assertEquals(202, response.getStatusCodeValue());
 	}
 
-	@Test(expected = ToDoNotFoundException.class)
-	public void testdeleteToDo_ToDoNotFoundException() throws Exception {
+	@Test
+	public void testDeleteToDo() throws JsonProcessingException {
 
 		ToDo do1 = new ToDo();
-		do1.setcompleted(true);
-		do1.setTitle("testing update");
-		
-	   MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/api/v1/todo/10")
-	      .contentType(MediaType.APPLICATION_JSON_VALUE)
-	      .content(om.writeValueAsString(do1)))
-		  .andReturn();
-	   
+		do1.setTitle("testing");
+		do1.setcompleted(false);
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		HttpEntity<String> entity = new HttpEntity<String>(om.writeValueAsString(do1), headers);
+		ResponseEntity<String> response = restTemplate.exchange(getRootUrl() + "/todo/1", HttpMethod.DELETE, entity,
+				String.class);
+		Assert.assertEquals(202, response.getStatusCodeValue());
 	}
 
-	
 }

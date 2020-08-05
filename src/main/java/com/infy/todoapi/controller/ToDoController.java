@@ -1,7 +1,6 @@
 package com.infy.todoapi.controller;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -23,6 +22,8 @@ import com.infy.todoapi.exceptions.ToDoNotFoundException;
 import com.infy.todoapi.model.ToDo;
 import com.infy.todoapi.repository.ToDoRepository;
 import com.infy.todoapi.exceptions.ErrorDetails;
+
+import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 
 @RestController
@@ -53,10 +54,11 @@ public class ToDoController {
 	}
 
 	@PutMapping("/todo/{id}")
-	public ResponseEntity<ToDo> updateToDo(@PathVariable(value = "id") Long toDoId, @Valid @RequestBody ToDo toDo) {
+	public ResponseEntity<ToDo> updateToDo(@PathVariable(value = "id") Long toDoId, @Valid @RequestBody ToDo toDo)throws ToDoNotFoundException {
 
 		Optional<ToDo> toDo1 = toDoRepository.findById(toDoId);
 		if (!toDo1.isPresent()) {
+			System.out.print("inside eceetpip");
 			throw new ToDoNotFoundException();
 		}
 
@@ -76,4 +78,13 @@ public class ToDoController {
 
 	}
 
+	
+	@PostConstruct
+    public void loadData() {
+		toDoRepository.save(new ToDo("Test",false));
+		toDoRepository.save(new ToDo("Test1",true));
+
+    }
+	
+	
 }
