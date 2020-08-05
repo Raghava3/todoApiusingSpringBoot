@@ -73,7 +73,7 @@ Rest API for todo application
 		response code - 202     
            
 #### Testing
-Postman Collection - offline
-Swagger - http://localhost:8080/swagger-ui.html- Documentation & Testing
+-Postman Collection - offline
+-Swagger - http://localhost:8080/swagger-ui.html- Documentation & Testing
         
         
