@@ -1,11 +1,7 @@
 ## Workspace setup
 - Clone/Download the staffing-tracker-api-v1-master project
-- Download Eclipse/intelij and mysql
-- Launch Eclipse
-- Import the project as MAVEN Project
-- Once the project is imported, Refresh the project to download the dependencies.
-- Run the TodoapiAppllication class as java application to launch the application  
-
+- Ensure that JAVA_HOME is set pointing to jdk11
+- Run command mvnw spring-boot:run
 
 # todoapi
 Rest API for todo application
@@ -72,8 +68,7 @@ Rest API for todo application
      
 		response code - 202     
            
-## Testing
--Postman Collection - offline
--Swagger - http://localhost:8080/swagger-ui.html- Documentation & Testing
+## Run API operations using(testing)
+http://localhost:8080/swagger-ui.html
         
         
