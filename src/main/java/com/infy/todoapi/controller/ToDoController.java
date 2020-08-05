@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,9 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.infy.todoapi.exceptions.ToDoNotFoundException;
 import com.infy.todoapi.model.ToDo;
 import com.infy.todoapi.repository.ToDoRepository;
-
+import com.infy.todoapi.exceptions.ErrorDetails;
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 
 @RestController
 @RequestMapping(value = "/api/v1")
@@ -42,8 +42,13 @@ public class ToDoController {
 	}
 
 	@PostMapping(value = "/todo", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ToDo> saveToDo(@Valid @NotNull @RequestBody ToDo toDo) {
+	public ResponseEntity<?> saveToDo(@Valid @RequestBody ToDo toDo, Errors errors) {
 
+		if (errors.hasErrors()) {
+			return new ResponseEntity<>(
+					new ErrorDetails("validation error", errors.getFieldError().getDefaultMessage()),
+					HttpStatus.BAD_REQUEST);
+		}
 		return ResponseEntity.ok(toDoRepository.save(toDo));
 	}
 
