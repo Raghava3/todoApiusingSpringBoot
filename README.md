@@ -1,5 +1,5 @@
 ## Workspace setup
-- Clone/Download the staffing-tracker-api-v1-master project
+- Clone/Download the todoapi project
 - Ensure that JAVA_HOME is set pointing to jdk11
 - Run command mvnw spring-boot:run
 
