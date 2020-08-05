@@ -6,6 +6,10 @@
 - Once the project is imported, Refresh the project to download the dependencies.
 - Run the TodoapiAppllication class as java application to launch the application  
 
+#Testing
+Postman Collection - offline
+Swagger - http://localhost:8080/swagger-ui.html
+
 # todoapi
 Rest API for todo application
 
