@@ -50,7 +50,7 @@ Rest API for todo application
     }
 
     ```
-   -  update opportunity (PUT /api/v1/todo/{id})
+   -  update todo (PUT /api/v1/todo/{id})
       #### request body
         ```json
              {
@@ -67,7 +67,7 @@ Rest API for todo application
         }
         ```
        
-     - Delete Opportunity (DELETE /api/v1/todo/{id})
+     - Delete todo (DELETE /api/v1/todo/{id})
      
 		response code - 202     
            
