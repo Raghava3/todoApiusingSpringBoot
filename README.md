@@ -1,5 +1,5 @@
 ## Workspace setup
-- Clone/Download the todoapi project
+- Clone/Download this repo
 - Ensure that JAVA_HOME is set pointing to jdk11
 - Run command mvnw spring-boot:run
 
