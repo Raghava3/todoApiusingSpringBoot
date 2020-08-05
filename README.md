@@ -7,7 +7,7 @@
 - Run the TodoapiAppllication class as java application to launch the application  
 
 # todoapi
-Rest API for staffing tracker
+Rest API for todo application
 
 
 
@@ -54,8 +54,7 @@ Rest API for staffing tracker
       #### request body
         ```json
              {
-             		 
-		        "title": "title name update",
+                "title": "title name update",
 		        "completed": true
 		      }
         ```
@@ -70,7 +69,7 @@ Rest API for staffing tracker
        
      - Delete Opportunity (DELETE /api/v1/todo/{id})
      
-		resonse code - 202     
+		response code - 202     
            
         
         
