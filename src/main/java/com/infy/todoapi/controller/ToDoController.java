@@ -26,6 +26,15 @@ import com.infy.todoapi.exceptions.ErrorDetails;
 import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 
+/**
+ * @author raghava
+ * This is REST API to controller class
+ * omitted the service layer as this is smaller application.
+ * For bigger apis will add service layer.
+ * 
+ *
+ */ 
+
 @RestController
 @RequestMapping(value = "/api/v1")
 public class ToDoController {
@@ -79,12 +88,12 @@ public class ToDoController {
 	}
 
 	
-	@PostConstruct
-    public void loadData() {
-		toDoRepository.save(new ToDo("Test",false));
-		toDoRepository.save(new ToDo("Test1",true));
-
-    }
+//	@PostConstruct
+//    public void loadData() {
+//		toDoRepository.save(new ToDo("Test",false));
+//		toDoRepository.save(new ToDo("Test1",true));
+//
+//    }
 	
 	
 }

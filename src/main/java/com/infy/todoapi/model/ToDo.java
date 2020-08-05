@@ -2,16 +2,35 @@ package com.infy.todoapi.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+/**
+ * @author raghava
+ * This is REST API to todo
+ * omitted the service layer as this is smaller application.
+ * For bigger apis will add service layer and separate request model
+ * 
+ *
+ */
+
 @Entity
+@Table(name = "todo")
 public class ToDo {
 	
+	/**
+	 * @author raghava
+	 * For larger apis we can create separate request model
+	 * 
+	 */
+	
+	
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	@NotBlank(message = "Title cant be blank")
 	@Size(max = 100 , message = "Maximum length is 100")
