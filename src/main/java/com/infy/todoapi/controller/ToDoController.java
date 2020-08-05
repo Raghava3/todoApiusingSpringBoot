@@ -23,7 +23,6 @@ import com.infy.todoapi.model.ToDo;
 import com.infy.todoapi.repository.ToDoRepository;
 import com.infy.todoapi.exceptions.ErrorDetails;
 
-import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 
 /**
