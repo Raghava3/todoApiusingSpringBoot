@@ -21,32 +21,30 @@ import org.springframework.web.bind.annotation.RestController;
 import com.infy.todoapi.exceptions.ToDoNotFoundException;
 import com.infy.todoapi.model.ToDo;
 import com.infy.todoapi.repository.ToDoRepository;
+import com.infy.todoapi.service.ToDoServiceInterface;
 import com.infy.todoapi.exceptions.ErrorDetails;
 
 import javax.validation.Valid;
 
 /**
- * @author raghava
- * This is REST API to controller class
- * omitted the service layer as this is smaller application.
- * For bigger apis will add service layer.
+ * @author raghava This is REST API to controller class omitted the service
+ *         layer as this is smaller application. For bigger apis will add
+ *         service layer.
  * 
  *
- */ 
+ */
 
 @RestController
 @RequestMapping(value = "/api/v1")
 public class ToDoController {
 
 	@Autowired
-	private ToDoRepository toDoRepository;
+	private ToDoServiceInterface todoService;
 
 	@GetMapping(value = "/todo", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Set<ToDo>> getAllToDo() {
 
-		Set<ToDo> toDos = new HashSet<>();
-		toDoRepository.findAll().forEach(toDos::add);
-		return ResponseEntity.ok(toDos);
+		return ResponseEntity.ok(todoService.getAllToDO());
 
 	}
 
@@ -54,37 +52,32 @@ public class ToDoController {
 	public ResponseEntity<?> saveToDo(@Valid @RequestBody ToDo toDo, Errors errors) {
 
 		if (errors.hasErrors()) {
-			return new ResponseEntity<>(
+			 return new ResponseEntity<>(
 					new ErrorDetails("validation error", errors.getFieldError().getDefaultMessage()),
 					HttpStatus.BAD_REQUEST);
 		}
-		return ResponseEntity.ok(toDoRepository.save(toDo));
+		return ResponseEntity.ok(todoService.saveToDo(toDo));
 	}
 
 	@PutMapping("/todo/{id}")
-	public ResponseEntity<ToDo> updateToDo(@PathVariable(value = "id") Long toDoId, @Valid @RequestBody ToDo toDo)throws ToDoNotFoundException {
+	public ResponseEntity<?> updateToDo(@PathVariable(value = "id") Long toDoId, @Valid @RequestBody ToDo toDo, Errors errors)
+			throws ToDoNotFoundException {
 
-		Optional<ToDo> toDo1 = toDoRepository.findById(toDoId);
-		if (!toDo1.isPresent()) {
-			System.out.print("inside eceetpip");
-			throw new ToDoNotFoundException();
+		if (errors.hasErrors()) {
+			 return new ResponseEntity<>(
+					new ErrorDetails("validation error", errors.getFieldError().getDefaultMessage()),
+					HttpStatus.BAD_REQUEST);
 		}
-
-		toDo.setId(toDoId);
-		return ResponseEntity.status(HttpStatus.ACCEPTED).body(toDoRepository.save(toDo));
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(todoService.updateToDo(toDoId, toDo));
 
 	}
 
 	@DeleteMapping("/todo/{id}")
-	public ResponseEntity<String> deleteToDo(@PathVariable(value = "id") long toDoId) {
-		Optional<ToDo> toDo1 = toDoRepository.findById(toDoId);
-		if (!toDo1.isPresent()) {
-			throw new ToDoNotFoundException();
-		}
-		toDoRepository.deleteById(toDoId);
+	public ResponseEntity<String> deleteToDo(@PathVariable(value = "id") Long toDoId) {
+
+		todoService.deleteToDo(toDoId);
 		return ResponseEntity.status(HttpStatus.ACCEPTED).build();
 
 	}
 
-	
 }
