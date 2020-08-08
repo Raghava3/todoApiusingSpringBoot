@@ -49,7 +49,7 @@ public class ToDoController {
 		log.debug("entering saveToDo");
 		if (errors.hasErrors()) {
 			log.info("received request: "+toDo.toString());
-			log.error("validation error->"+errors.getFieldError().getDefaultMessage().toString());
+			log.error("validation error ->"+errors.getFieldError().getDefaultMessage().toString());
 			 return new ResponseEntity<>(
 					new ErrorDetails("validation error", errors.getFieldError().getDefaultMessage()),
 					HttpStatus.BAD_REQUEST);
@@ -74,7 +74,7 @@ public class ToDoController {
 		log.debug("entering updateToDo");
 		if (errors.hasErrors()) {
 			log.info("received request "+toDo.toString());
-			log.error("validation error->"+errors.getFieldError().getDefaultMessage().toString());
+			log.error("validation error ->"+errors.getFieldError().getDefaultMessage().toString());
 			return new ResponseEntity<>(
 					new ErrorDetails("validation error", errors.getFieldError().getDefaultMessage()),
 					HttpStatus.BAD_REQUEST);
