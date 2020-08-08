@@ -34,7 +34,7 @@ public class ToDo {
 	private Long id;
 	@NotBlank(message = "Title cant be blank")
 	@Size(max = 100 , message = "Maximum length is 100")
-	@Pattern(regexp = "^[A-Za-z0-9 ]+$", message = "Must not contain special character")
+	@Pattern(regexp = "^[A-Za-z0-9 ]+$", message = "Must not contain special character in title")
 	private String title;
 	private boolean completed;
 	
@@ -70,8 +70,15 @@ public class ToDo {
 		return completed;
 	}
 
+
 	public void setcompleted(boolean completed) {
 		this.completed = completed;
+	}
+
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "{title:"+getTitle()+",completed:"+iscompleted()+"}";
 	}
 
 	
